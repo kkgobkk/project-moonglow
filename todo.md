@@ -14,3 +14,7 @@
 ### Interfaccia
 * aggiungere favicon e logo
 * creare handlePlayerInput
+* rendere responsivo lo scaling
+
+## Debug
+* capire perché i nemici non attaccano appena il giocatore entra nel loro raggio
