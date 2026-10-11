@@ -1,10 +1,16 @@
-# Gestione mappa
-1. creare removeEtityFromTile e putEntityOnTile
-2. aggiungere setTile
-3. implementare caricamento di file mappa
+# todo.md
 
-# Entità
-1. migliorare pathfinding
+## Gestione mappa
+* creare removeEtityFromTile e putEntityOnTile
+* aggiungere setTile
+* implementare caricamento di file mappa
 
-# Incantesimi
-1. Fare prima un design doc e **poi** iniziare a programmare
+## Entità
+* migliorare pathfinding
+
+## Incantesimi
+* fare prima un design doc e **poi** iniziare a programmare
+
+### Interfaccia
+* aggiungere favicon e logo
+* creare handlePlayerInput
