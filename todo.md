@@ -1,19 +1,10 @@
-\# Gestione mappa
-
+# Gestione mappa
 1. creare removeEtityFromTile e putEntityOnTile
-2. aggiungere getTile e setTile
+2. aggiungere setTile
 3. implementare caricamento di file mappa
 
+# Entità
+1. migliorare pathfinding
 
-
-\# Enitità
-
-1. aggiungere hp per ogni entità
-2. migliorare pathfinding
-
-
-
-\# Incantesimi
-
-1. Fare prima un design doc e poi iniziare
-
+# Incantesimi
+1. Fare prima un design doc e **poi** iniziare a programmare
