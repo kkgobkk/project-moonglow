@@ -1,0 +1,46 @@
+@font-face {
+        font-family: "Alagard";
+        src: url("../src/alagard.ttf") format("truetype");
+}
+
+body{
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-family: "Alagard", sans-serif;
+    overflow: hidden;
+}
+
+table{
+    margin: auto;
+}
+
+canvas{
+    outline: 1px solid white;
+    image-rendering: pixelated;
+}
+
+.center{
+    text-align: center;
+}
+
+.titlecard{
+    border-bottom: 1px solid #bababa;
+    margin-bottom: 5%;
+}
+
+.asset{
+    display: none;
+}
+
+#main_box{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: scale(2) translate(-25%, -25%);;
+}
+
+#main_viewport{
+    width: 640;
+    height: 320;
+}
