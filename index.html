@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Project Moonglow</title>
+    <link rel="stylesheet" href="style/stlye.css">
+</head>
+<body>
+    <div class="titlecard"><h1 class="center">Project Moonglow</h1></div>
+    <div id="main_box">
+        <canvas id="main_viewport" width="640" height="320" ondragstart="return false;" ondrop="return false;"></canvas>
+    </div>
+
+    <!-- IMPORT IMAGES -->
+    <img id="tileset" class="asset" src="src/moonglow_tiles.png">
+
+    <!--IMPORT SCRITPS-->
+    <script src="script/Game.js"></script>
+    <script src="script/GameMap.js"></script>
+    <script src="script/Tile.js"></script>
+    <script src="script/TestMap.js"></script>
+    <script src="script/Interface.js"></script>
+    <script src="script/Entity.js"></script>
+    <script src="script/Player.js"></script>
+    <script src="script/Enemy.js"></script>
+    <script src="script/SpellEffect.js"></script>
+    <script src="script/Spell.js"></script>
+
+    <!-- START THE GAME-->
+    <script>
+        Game.start();
+    </script>
+
+</body>

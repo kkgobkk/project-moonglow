@@ -89,26 +89,25 @@ class Entity{
         let targetx = this.posx + x;
         let targety = this.posy + y;
 
-        if (targetx < 0 || targetx >= Game.instance.map.width || targety < 0 || targety >= Game.instance.map.height) return false;
+        if (Game.instance.map.inBounds(targetx, targety)) {
+            if (Game.instance.map.checkMovementLegal(this.movementType, targetx, targety) && Game.instance.map.array[targety * Game.instance.map.width + targetx].currentEntity == null) {
+                //update references on tiles
+                Game.instance.map.getTile(this.posx, this.posy).currentEntity = null;
+                Game.instance.map.getTile(targetx, targety).currentEntity = this;
 
-        if (Game.instance.map.checkMovementLegal(this.movementType, targetx, targety) && Game.instance.map.array[targety * Game.instance.map.width + targetx].currentEntity == null) {
-            //update references on tiles
-            Game.instance.map.getTile(this.posx, this.posy).currentEntity = null;
-            Game.instance.map.getTile(targetx, targety).currentEntity = this;
+                //turn to the appropriate direction
+                if (x > 0) this.facing_left = false;
+                if (x < 0) this.facing_left = true;
 
-            //turn to the appropriate direction
-            if (x > 0) this.facing_left = false;
-            if (x < 0) this.facing_left = true;
-
-            this.posx = targetx;
-            this.posy = targety;
-            return true;
+                this.posx = targetx;
+                this.posy = targety;
+                return true;
+            }
         }
         return false;
     }
 
     meleeAttack(targetEntity){
-        console.log(this.id, targetEntity.id);
         targetEntity.currentHP -= this.meleeDamage;
         if (targetEntity.currentHP <= 0) {
             targetEntity.die();

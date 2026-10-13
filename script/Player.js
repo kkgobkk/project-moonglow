@@ -4,17 +4,21 @@ class Player extends Entity{
     }
 
     move(x, y){
-        if (this.posx + x < 0 || this.posx + x >= Game.instance.map.width || this.posy + y < 0 || this.posy + y >= Game.instance.map.height) return false;
-
-        let targetEntity = Game.instance.map.getTile(this.posx+x, this.posy+y).currentEntity;
-        if (targetEntity != null && targetEntity.type == "enemy") {
-            this.meleeAttack(targetEntity);
+        let moved = false;
+        if (Game.instance.map.inBounds(this.posx + x, this.posy + y)) {
+            let targetEntity = Game.instance.map.getTile(this.posx+x, this.posy+y).currentEntity;
+            if (targetEntity != null && targetEntity.type == "enemy") {
+                this.meleeAttack(targetEntity);
+                moved = true;
+            }
+            else{
+                moved = super.move(x, y);
+            }
         }
-        else{
-            super.move(x, y);
+        if (moved) {
+            Game.instance.update();
         }
-
-        Game.instance.update();
+        return moved;
     }
 
     die(){

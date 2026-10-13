@@ -1,7 +1,6 @@
 # todo.md
 
 ## Gestione mappa
-* creare removeEtityFromTile e putEntityOnTile
 * aggiungere setTile
 * implementare caricamento di file mappa
 
@@ -13,8 +12,3 @@
 
 ### Interfaccia
 * aggiungere favicon e logo
-* creare handlePlayerInput
-* rendere responsivo lo scaling
-
-## Debug
-* capire perché i nemici non attaccano appena il giocatore entra nel loro raggio

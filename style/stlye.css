@@ -9,6 +9,7 @@ body{
     font-size: 20px;
     font-family: "Alagard", sans-serif;
     overflow: hidden;
+    image-rendering: pixelated;
 }
 
 table{
@@ -37,10 +38,11 @@ canvas{
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: scale(2) translate(-25%, -25%);;
 }
+
 
 #main_viewport{
     width: 640;
     height: 320;
+    transform: scale(2) translate(-25%, -25%);
 }
