@@ -45,60 +45,77 @@ class Interface{
     }
 
     static handleMouseOver(e){
-        if (Interface.selectedCell != null) {
-            Interface.selectedCell.draw();
-            if (Interface.selectedCell.currentEntity != null) {
-                Interface.selectedCell.currentEntity.draw();
+        if (Game.instance.player != null) {
+            Interface.clearScreen();
+            Game.instance.map.removeHighlights();
+            if (Interface.selectedCell != null) {
+                Interface.selectedCell.draw();
+                if (Interface.selectedCell.currentEntity != null) {
+                    Interface.selectedCell.currentEntity.draw();
+                }
             }
+            Interface.selectedCell = Interface.selectCellByScreenCoords(e.clientX, e.clientY);
+            Interface.highlightPathToSelectedCell();
+            Game.instance.map.draw();
         }
-        Interface.selectedCell = Interface.selectCellByScreenCoords(e.clientX, e.clientY);
-        Interface.HighlightCell(Interface.selectedCell.posx, Interface.selectedCell.posy);
     }
 
-    static HighlightCell(x, y) {
-        
-        Interface.ctx.fillStyle = "rgba(255, 255, 255, 0.3)";   
-        Interface.ctx.fillRect(x * 32, y * 32, 32, 32);
+    static highlightCell(x, y, strength = 0.2) {
+        let t = Game.instance.map.getTile(x, y);
+        t.highlightStrength = strength;
+        t.draw();
     }
 
     
-    static highlightPathToSelectedCell(e){
-        let px = Game.instance.player.posx, py = Game.instance.player.posy;
-        Interface.Bresenham(px, py, Interface.selectedCell.posx, Interface.selectedCell.posy, Interface.HighlightCell);
+    static highlightPathToSelectedCell(){
+        if (Interface.selectedCell != null) {
+            let px = Game.instance.player.posx, py = Game.instance.player.posy;
+            Interface.Bresenham(px, py, Interface.selectedCell.posx, Interface.selectedCell.posy, Interface.highlightCell);
+            Interface.highlightCell(Interface.selectedCell.posx, Interface.selectedCell.posy, 0.30);
+        }
     }
 
     static Bresenham(startx, starty, endx, endy, func) {
         let dx = Math.abs(endx - startx);
         let dy = Math.abs(endy - starty);
         let sx = Math.sign(endx - startx);
-        let sy = Math.sign(endx - startx);
+        let sy = Math.sign(endy - starty);
+        let currx = startx, curry = starty;
 
         let err = dx - dy;
 
         while (true) {
-            console.log(startx, starty);
-            func(startx, starty);
+            if (currx != startx || curry != starty)func(currx, curry);
 
-            if (startx === endx && starty === endy) break;
+            if (currx === endx && curry === endy) break;
 
             let e2 = 2 * err;
             if (e2 > -dy) {
                 err -= dy;
-                startx += sx;
+                currx += sx;
             }
             if (e2 < dx) {
                 err += dx;
-                starty += sy;
+                curry += sy;
             }
         }
     }
 
     static handleLeftClick(e){
-        Interface.handleMouseOver(e);
-        Game.instance.player.moveTowardsTarget(Interface.selectedCell.posx, Interface.selectedCell.posy);
+        if (Game.instance.player != null) {
+            let player = Game.instance.player;
+            Interface.selectedCell = Interface.selectCellByScreenCoords(e.clientX, e.clientY);
+            if (Interface.selectedCell.currentEntity != null && Interface.selectedCell.currentEntity == player) {
+                player.rest();
+            }
+            else {
+                player.moveTowardsTarget(Interface.selectedCell.posx, Interface.selectedCell.posy);
+            }
+        }
     }
 
     static handleKeyboardInput(e){
+        Interface.selectedCell = null;
         if (Game.instance.player != null) {
             switch (e.code) {
                 case "KeyW":
@@ -151,7 +168,7 @@ class Interface{
                 
                 case "Numpad5":
                 case "KeyZ":
-                    Game.instance.player.move(0, 0);
+                    Game.instance.player.rest();
                     break;
 
                 default:

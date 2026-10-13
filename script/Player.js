@@ -1,6 +1,6 @@
 class Player extends Entity{
     constructor(posx, posy){
-        super("player", 0, posx, posy, 0, "walking", 10, 3);
+        super("player", 0, posx, posy, 0, "walking", 100, 20);
     }
 
     move(x, y){
@@ -19,6 +19,13 @@ class Player extends Entity{
             Game.instance.update();
         }
         return moved;
+    }
+
+    rest(){
+        if (this.currentHP < this.maxHP) {
+            this.currentHP ++;
+        }
+        Game.instance.update();
     }
 
     die(){

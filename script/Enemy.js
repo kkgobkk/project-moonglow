@@ -9,7 +9,7 @@ class Enemy extends Entity{
     ai_state;
 
     constructor(posx, posy){
-        super("enemy", Enemy.nextId++, posx, posy, 1, "walking", 5, 1);
+        super("enemy", Enemy.nextId++, posx, posy, 1, "walking", 50, 15);
     }
 
     updateAiState(){

@@ -48,7 +48,9 @@ class Entity{
     }
 
     update(){
-        //..
+        if (this.currentHP < this.maxHP) {
+            this.currentHP ++;
+        }
     }
 
     moveTowardsTarget(targetx, targety){

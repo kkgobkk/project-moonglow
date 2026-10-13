@@ -40,6 +40,12 @@ class GameMap{
         return this.array[y * this.width + x];
     }
 
+    removeHighlights(){
+        for (let i in this.array) {
+                this.array[i].highlightStrength = 0;
+            }
+    }
+
     draw(){
         for (let i in this.array) {
             this.array[i].draw();

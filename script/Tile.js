@@ -1,4 +1,4 @@
-const TTYPE_VOID = 0x0, TTYPE_FLOOR = 0x1, TTYPE_GRASS = 0x2, TTYPE_BOULDER = 0x3, TTYPE_WALL = 0x5, TTYPE_WATER = 0x4, TTYPE_OIL = 0x5;
+const TTYPE_VOID = 0x0, TTYPE_FLOOR = 0x1, TTYPE_GRASS = 0x2, TTYPE_BOULDER = 0x3, TTYPE_WALL = 0x4, TTYPE_WATER = 0x5, TTYPE_OIL = 0x6;
 
 class Tile{
     type;
@@ -9,6 +9,7 @@ class Tile{
     explosive = false;
     conductor = false;
     
+    highlightStrength = 0;
     texture_index;
     texture_width = 32;
     texture_height = 32;
@@ -81,5 +82,14 @@ class Tile{
                                 this.posy*this.height,   //draw y
                                 this.width,             //draw width
                                 this.height);           //draw height
+
+        if (this.highlightStrength > 0) {
+            Interface.ctx.fillStyle = "rgba(255, 255, 255, " + this.highlightStrength + ")";
+            Interface.ctx.fillRect(this.posx * this.height, this.posy * this.width, this.height, this.width);
+        }
+
+        if (this.currentEntity != null) {
+            this.currentEntity.draw();
+        }
     }
 }

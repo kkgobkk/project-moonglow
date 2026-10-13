@@ -40,14 +40,12 @@ class Game{
 
     draw(){
         this.map.draw()
-
-        for (let i in this.entityList) {
-            this.entityList[i].draw();
-        }
     }
 
     update(){
         Interface.clearScreen();
+        this.map.removeHighlights();
+        Interface.highlightPathToSelectedCell();
 
         for (let i in this.entityList) {
             this.entityList[i].update();

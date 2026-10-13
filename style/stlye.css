@@ -12,22 +12,8 @@ body{
     image-rendering: pixelated;
 }
 
-table{
-    margin: auto;
-}
-
 canvas{
-    outline: 1px solid white;
     image-rendering: pixelated;
-}
-
-.center{
-    text-align: center;
-}
-
-.titlecard{
-    border-bottom: 1px solid #bababa;
-    margin-bottom: 5%;
 }
 
 .asset{
@@ -40,9 +26,7 @@ canvas{
     top: 50%;
 }
 
-
 #main_viewport{
     width: 640;
     height: 320;
-    transform: scale(2) translate(-25%, -25%);
 }
