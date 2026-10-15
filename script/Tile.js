@@ -19,6 +19,8 @@ class Tile{
     posy;
 
     currentEntity = null;
+    pathToPlayer = null;
+    dijkstraCost = Infinity;
 
     constructor(type, posx, posy){
         this.type = type;
@@ -72,6 +74,53 @@ class Tile{
         }
     }
 
+    checkMovementLegal(type){
+        switch (type) {
+            case "walking":
+                return this.walkable;
+                break;
+
+            case "swimming":
+                return this.swimmable;
+                break;
+
+            case "flying":
+                return this.flyable;
+                break;
+
+            default:
+                return false;
+                break;
+        }
+    }
+
+    getNeighbors(){
+        let neighbors = [];
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (x != 0 || y != 0) {
+                    let t = Game.instance.map.getTile(this.posx + x, this.posy + y)
+                    if (t != null) {
+                        neighbors.push(t);
+                    }
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    distanceChebishev = function(tile){
+        let dx = Math.abs(this.posx - tile.posx);
+        let dy =  Math.abs(this.posy - tile.posy);
+        return dx > dy ? dx : dy;
+    }
+
+    distanceManhattan = function(tile){
+        let dx = Math.abs(this.posx - tile.posx);
+        let dy =  Math.abs(this.posy - tile.posy);
+        return dx + dy;
+    }
+
     draw(){
         Interface.ctx.drawImage(Interface.tileset,           //file
                                 this.texture_width * this.texture_index,    //crop start x
@@ -87,7 +136,10 @@ class Tile{
             Interface.ctx.fillStyle = "rgba(255, 255, 255, " + this.highlightStrength + ")";
             Interface.ctx.fillRect(this.posx * this.height, this.posy * this.width, this.height, this.width);
         }
-
+        if (Interface.debug) {
+            Interface.ctx.fillStyle = "rgba(255, 255, 255, 0.3";
+            Interface.ctx.fillText(this.dijkstraCost, this.posx * this.height, (this.posy+1) * this.width, this.height, this.width);
+        }
         if (this.currentEntity != null) {
             this.currentEntity.draw();
         }

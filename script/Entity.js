@@ -6,6 +6,8 @@ class Entity{
     movementType;
     maxHP;
     currentHP;
+    currentMorale;
+    maxMorale;
     meleeDamage;
 
     texture_index = 0;
@@ -15,7 +17,7 @@ class Entity{
     width = 32;
     height = 32;
 
-    constructor(type, id, posx, posy, texture_index, movementType, maxHP, meleeDamage){
+    constructor(type, id, posx, posy, texture_index, movementType, maxHP, maxMorale, meleeDamage){
         this.type = type;
         this.id = id;
         this.posx = posx;
@@ -24,6 +26,8 @@ class Entity{
         this.movementType = movementType;
         this.maxHP = maxHP;
         this.currentHP = maxHP;
+        this.maxMorale = maxMorale;
+        this.currentMorale = maxMorale;
         this.meleeDamage = meleeDamage;
 
         Game.instance.map.getTile(posx, posy).currentEntity = this;
@@ -51,6 +55,10 @@ class Entity{
         if (this.currentHP < this.maxHP) {
             this.currentHP ++;
         }
+
+        if (this.currentMorale < this.maxMorale) {
+            this.currentMorale ++;
+        }
     }
 
     moveTowardsTarget(targetx, targety){
@@ -73,6 +81,23 @@ class Entity{
                 this.move(0, dy);
             }
         }
+    }
+
+    moveTowardsPlayer(){
+        let pathToPlayer = Game.instance.map.getTile(this.posx, this.posy).pathToPlayer;
+        if (pathToPlayer != null) {
+            this.moveToTile(pathToPlayer);
+        }
+    }
+    
+    fleeFromPlayer(){
+        let ppos = Game.instance.player.currentTile();
+        let neighbors = Game.instance.map.getTile(this.posx, this.posy).getNeighbors().sort((a, b) => {let d = b.dijkstraCost - a.dijkstraCost; if (d == 0) return b.distanceChebishev(ppos) - a.distanceChebishev(ppos); else return d;});
+        let target, i = 0;
+        do {
+            target = neighbors[i++];
+        } while (!target.checkMovementLegal(this.movementType) && i < neighbors.length);
+        this.moveToTile(target);
     }
 
     moveRandomly(chance){
@@ -109,10 +134,30 @@ class Entity{
         return false;
     }
 
+    moveToTile(t){
+        if (Game.instance.map.checkMovementLegal(this.movementType, t.posx, t.posy) && t.currentEntity == null) {
+            //update references on tiles
+            Game.instance.map.getTile(this.posx, this.posy).currentEntity = null;
+            t.currentEntity = this;
+
+            //turn to the appropriate direction
+            if (this.posx < t.posx) this.facing_left = false;
+            if (this.posx > t.posx) this.facing_left = true;
+
+            this.posx = t.posx;
+            this.posy = t.posy;
+            return true;
+        }
+    }
+
     meleeAttack(targetEntity){
         targetEntity.currentHP -= this.meleeDamage;
-        if (targetEntity.currentHP <= 0) {
-            targetEntity.die();
+        targetEntity.onBeingAttacked(this);
+    }
+
+    onBeingAttacked(attacker){
+        if (this.currentHP <= 0) {
+            this.die();
         }
     }
 
@@ -132,6 +177,9 @@ class Entity{
                                 this.width,             //draw width
                                 this.height);           //draw height
         this.drawHealthBar();
+        if (Interface.debug) {
+            this.drawMoraleBar();
+        }
     }
 
     drawHealthBar(){
@@ -145,5 +193,10 @@ class Entity{
             Interface.ctx.fillStyle = "#00ff00";
 
         Interface.ctx.fillRect(this.posx*this.width, this.posy*this.height, this.width * this.currentHP / this.maxHP, 2);
+    }
+
+    drawMoraleBar(){
+        Interface.ctx.fillStyle = "#9900ff";
+        Interface.ctx.fillRect(this.posx*this.width, this.posy*this.height+2, this.width * this.currentMorale / this.maxMorale, 2);
     }
 }

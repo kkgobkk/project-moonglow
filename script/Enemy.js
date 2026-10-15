@@ -9,7 +9,7 @@ class Enemy extends Entity{
     ai_state;
 
     constructor(posx, posy){
-        super("enemy", Enemy.nextId++, posx, posy, 1, "walking", 50, 15);
+        super("enemy", Enemy.nextId++, posx, posy, 1, "walking", 50, 10, 15);
     }
 
     updateAiState(){
@@ -19,7 +19,7 @@ class Enemy extends Entity{
         }
 
         if (Entity.distance(this, Game.instance.player) <= AGGRO_RANGE) {
-            if (this.currentHP <= this.maxHP * FLEE_THRESHOLD)
+            if (this.currentMorale < this.maxMorale)
                 this.ai_state = AI_FLEE;
             else
                 this.ai_state = AI_AGGRO;
@@ -30,6 +30,7 @@ class Enemy extends Entity{
     }
 
     update(){
+        super.update();
         this.updateAiState();
 
         switch (this.ai_state) {
@@ -38,18 +39,25 @@ class Enemy extends Entity{
                     this.meleeAttack(Game.instance.player);
                 }
                 else {
-                    this.moveTowardsTarget(Game.instance.player.posx, Game.instance.player.posy);
+                    this.moveTowardsPlayer(Game.instance.player.posx, Game.instance.player.posy);
                 }
                 break;
 
             case AI_FLEE:
-                this.fleeFromTarget(Game.instance.player.posx, Game.instance.player.posy);
+                this.fleeFromPlayer();
                 break;
             
             case AI_ROAM:
             default:
                 this.moveRandomly(ROAM_CHANCE);
         }
-       
+    }
+
+    onBeingAttacked(){
+        super.onBeingAttacked();
+
+        if (this.currentHP <= this.maxHP * FLEE_THRESHOLD) {
+            this.currentMorale = 0;
+        }
     }
 }

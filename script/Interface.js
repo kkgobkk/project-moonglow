@@ -7,6 +7,7 @@ class Interface{
     static MAX_Y;
     static tileset;
     static scaleFactor;
+    static debug = false;
     static selectedCell = null;
 
     static init(){
@@ -70,8 +71,13 @@ class Interface{
     static highlightPathToSelectedCell(){
         if (Interface.selectedCell != null) {
             let px = Game.instance.player.posx, py = Game.instance.player.posy;
-            Interface.Bresenham(px, py, Interface.selectedCell.posx, Interface.selectedCell.posy, Interface.highlightCell);
-            Interface.highlightCell(Interface.selectedCell.posx, Interface.selectedCell.posy, 0.30);
+            let curr = Interface.selectedCell;
+            Interface.highlightCell(curr.posx, curr.posy, 0.30);
+
+            while (curr.pathToPlayer) {
+                curr = curr.pathToPlayer;
+                Interface.highlightCell(curr.posx, curr.posy, 0.15);
+            }
         }
     }
 

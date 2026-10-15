@@ -18,6 +18,7 @@ class Game{
         Game.instance.entityList = {};
         Game.instance.generateMap();
         Game.instance.player = new Player(Game.instance.map.startPosX, Game.instance.map.startPosY);
+        Game.instance.map.buildPathsToPlayer();
         Game.instance.draw();
     }
 
@@ -45,7 +46,9 @@ class Game{
     update(){
         Interface.clearScreen();
         this.map.removeHighlights();
-        Interface.highlightPathToSelectedCell();
+        if (this.player) {
+            Interface.highlightPathToSelectedCell();
+        }
 
         for (let i in this.entityList) {
             this.entityList[i].update();

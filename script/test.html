@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>PQ test</title>
+</head>
+<body>
+    <script src="PriorityQueue.js"></script>
+    <script>
+        let pq = new PriorityQueue((x, y)=>{console.log("comparing", x, y); return x.id==y.id?0:(x.id<y.id?-1:1)});
+        pq.push({id: 5, name: "gogo"});
+        pq.push({id: 7, name: "gugu"});
+        pq.push({id: 1, name: "gaga"});
+        pq.push({id: 2, name: "gege"});
+        let x = {id: 6, name:"gigi"};
+        pq.push(x);
+        x.id = 116;
+        pq.decreaseKey(x);
+        while (!pq.isEmpty()) {
+            console.log(pq.pop());
+        }
+    </script>
+</body>

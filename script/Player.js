@@ -1,24 +1,34 @@
 class Player extends Entity{
     constructor(posx, posy){
-        super("player", 0, posx, posy, 0, "walking", 100, 20);
+        super("player", 0, posx, posy, 0, "walking", 100, 0, 20);
+    }
+
+    currentTile(){
+        return Game.instance.map.getTile(this.posx, this.posy);
     }
 
     move(x, y){
-        let moved = false;
+        let turnover = false;
+        let oldx = this.x, oldy = this.y;
         if (Game.instance.map.inBounds(this.posx + x, this.posy + y)) {
             let targetEntity = Game.instance.map.getTile(this.posx+x, this.posy+y).currentEntity;
             if (targetEntity != null && targetEntity.type == "enemy") {
                 this.meleeAttack(targetEntity);
-                moved = true;
+                turnover = true;
             }
             else{
-                moved = super.move(x, y);
+                turnover = super.move(x, y);
             }
         }
-        if (moved) {
+
+        if (this.posx != oldx || this.posy != oldy) {
+            Game.instance.map.buildPathsToPlayer();
+        }
+
+        if (turnover) {
             Game.instance.update();
         }
-        return moved;
+        return turnover;
     }
 
     rest(){
