@@ -76,11 +76,11 @@ class GameMap{
         while (!pq.isEmpty()) {
             u = pq.pop();
             let adj = u.getNeighbors();
-            adj.sort((a, b) => a.distanceManhattan(u) - b.distanceManhattan(u));
             for(let i in adj) {
                 let v = adj[i];
-                if (v != null && (v.posx != u.posx || v.posy != u.posy) && (this.checkMovementLegal(type, v.posx, v.posy)) && (v.dijkstraCost > u.dijkstraCost + 1)) {
-                    v.dijkstraCost = u.dijkstraCost + 1;
+                let cost = v.distanceManhattan(u) >= 2 ? 1.00001 : 1;
+                if (v != null && (v.posx != u.posx || v.posy != u.posy) && (this.checkMovementLegal(type, v.posx, v.posy)) && (v.dijkstraCost > u.dijkstraCost + cost)) {
+                    v.dijkstraCost = u.dijkstraCost + cost;
                     v.pathToPlayer = u;
                     pq.decreaseKey(v);
                 }

@@ -138,7 +138,7 @@ class Tile{
         }
         if (Interface.debug) {
             Interface.ctx.fillStyle = "rgba(255, 255, 255, 0.3";
-            Interface.ctx.fillText(this.dijkstraCost, this.posx * this.height, (this.posy+1) * this.width, this.height, this.width);
+            Interface.ctx.fillText(Math.floor(this.dijkstraCost), this.posx * this.height, (this.posy+1) * this.width, this.height, this.width);
         }
         if (this.currentEntity != null) {
             this.currentEntity.draw();

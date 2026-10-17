@@ -1,6 +1,4 @@
 const AI_ROAM = 0, AI_AGGRO = 1, AI_FLEE = 2;
-const AGGRO_RANGE = 3;
-const FLEE_THRESHOLD = 0.25;
 const ROAM_CHANCE = 0.5;
 
 class Enemy extends Entity{
@@ -18,7 +16,7 @@ class Enemy extends Entity{
             return;
         }
 
-        if (Entity.distance(this, Game.instance.player) <= AGGRO_RANGE) {
+        if (Entity.distance(this, Game.instance.player) <= this.aggroRange) {
             if (this.currentMorale < this.maxMorale)
                 this.ai_state = AI_FLEE;
             else
@@ -56,7 +54,7 @@ class Enemy extends Entity{
     onBeingAttacked(){
         super.onBeingAttacked();
 
-        if (this.currentHP <= this.maxHP * FLEE_THRESHOLD) {
+        if (this.currentHP <= this.maxHP * this.fleeThreshold) {
             this.currentMorale = 0;
         }
     }

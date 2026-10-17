@@ -9,6 +9,9 @@ class Entity{
     currentMorale;
     maxMorale;
     meleeDamage;
+    aggroRange = 3;
+    fleeThreshold = 0.25;
+    foughtThisTurn = false;
 
     texture_index = 0;
     facing_left = false;
@@ -52,13 +55,14 @@ class Entity{
     }
 
     update(){
-        if (this.currentHP < this.maxHP) {
+        if (this.currentHP < this.maxHP && !this.foughtThisTurn) {
             this.currentHP ++;
         }
-
-        if (this.currentMorale < this.maxMorale) {
+        if (this.currentMorale < this.maxMorale && this.currentHP > (this.fleeThreshold * this.maxHP)) {
             this.currentMorale ++;
         }
+
+        this.foughtThisTurn = false;
     }
 
     moveTowardsTarget(targetx, targety){
@@ -135,27 +139,17 @@ class Entity{
     }
 
     moveToTile(t){
-        if (Game.instance.map.checkMovementLegal(this.movementType, t.posx, t.posy) && t.currentEntity == null) {
-            //update references on tiles
-            Game.instance.map.getTile(this.posx, this.posy).currentEntity = null;
-            t.currentEntity = this;
-
-            //turn to the appropriate direction
-            if (this.posx < t.posx) this.facing_left = false;
-            if (this.posx > t.posx) this.facing_left = true;
-
-            this.posx = t.posx;
-            this.posy = t.posy;
-            return true;
-        }
+        return this.move(t.posx - this.posx, t.posy - this.posy);
     }
 
     meleeAttack(targetEntity){
+        this.foughtThisTurn = true;
         targetEntity.currentHP -= this.meleeDamage;
         targetEntity.onBeingAttacked(this);
     }
 
     onBeingAttacked(attacker){
+        this.foughtThisTurn = true;
         if (this.currentHP <= 0) {
             this.die();
         }

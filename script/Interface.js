@@ -9,6 +9,7 @@ class Interface{
     static scaleFactor;
     static debug = false;
     static selectedCell = null;
+    static stepToSelectedCell = null;
 
     static init(){
         Interface.canvas = document.getElementById("main_viewport");
@@ -70,11 +71,13 @@ class Interface{
     
     static highlightPathToSelectedCell(){
         if (Interface.selectedCell != null) {
-            let px = Game.instance.player.posx, py = Game.instance.player.posy;
             let curr = Interface.selectedCell;
             Interface.highlightCell(curr.posx, curr.posy, 0.30);
 
             while (curr.pathToPlayer) {
+                if (curr.pathToPlayer.currentEntity == Game.instance.player) {
+                    Interface.stepToSelectedCell = curr;
+                }
                 curr = curr.pathToPlayer;
                 Interface.highlightCell(curr.posx, curr.posy, 0.15);
             }
@@ -108,6 +111,7 @@ class Interface{
     }
 
     static handleLeftClick(e){
+        console.log("sos", Interface.stepToSelectedCell)
         if (Game.instance.player != null) {
             let player = Game.instance.player;
             Interface.selectedCell = Interface.selectCellByScreenCoords(e.clientX, e.clientY);
@@ -115,7 +119,7 @@ class Interface{
                 player.rest();
             }
             else {
-                player.moveTowardsTarget(Interface.selectedCell.posx, Interface.selectedCell.posy);
+                player.moveToTile(Interface.stepToSelectedCell);
             }
         }
     }

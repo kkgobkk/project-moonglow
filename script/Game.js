@@ -46,7 +46,7 @@ class Game{
     update(){
         Interface.clearScreen();
         this.map.removeHighlights();
-        if (this.player) {
+        if (this.player != null) {
             Interface.highlightPathToSelectedCell();
         }
 
