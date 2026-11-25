@@ -6,8 +6,18 @@ class Enemy extends Entity{
     
     ai_state;
 
-    constructor(posx, posy){
-        super("enemy", Enemy.nextId++, posx, posy, 1, "walking", 50, 10, 15);
+    constructor(posx, posy, type){
+        let movementType, textureIndex;
+        switch (type) {
+            case "enemy_goblin":
+                movementType = "walking";
+                textureIndex = 1;
+                break;
+            case "enemy_wisp":
+                movementType = "flying";
+                textureIndex = 2;
+        }
+        super(type, Enemy.nextId++, "enemy", posx, posy, textureIndex, movementType, 50, 10, 15);
     }
 
     updateAiState(){

@@ -2,13 +2,12 @@
 
 ## fase 1
 * implementare campo visivo
-* implementare pathfinding
+* pathfinding acquatico
 * implementare scorrimento della mappa
 * separare interfaccia in più canva/elementi
 * creare wiki
 
 ## fase 2
-* aggiungere setTile
 * implementare generazione mappe
 * implementare oggetti e inventario
 * implementare incantesimi di base

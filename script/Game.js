@@ -18,7 +18,8 @@ class Game{
         Game.instance.entityList = {};
         Game.instance.generateMap();
         Game.instance.player = new Player(Game.instance.map.startPosX, Game.instance.map.startPosY);
-        Game.instance.map.buildPathsToPlayer();
+        Game.instance.map.buildPathsToPlayer("walking");
+        Game.instance.map.buildPathsToPlayer("flying");
         Game.instance.draw();
     }
 
@@ -35,7 +36,7 @@ class Game{
         this.map.startPosY = TestMap.startPosY;
 
         for (let i in TestMap.enemy_spawns) {
-            new Enemy(TestMap.enemy_spawns[i][0], TestMap.enemy_spawns[i][1]);
+            new Enemy(TestMap.enemy_spawns[i][0], TestMap.enemy_spawns[i][1], TestMap.enemy_spawns[i][2]);
         }
     }
 

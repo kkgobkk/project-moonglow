@@ -54,8 +54,7 @@ class GameMap{
         }
     }
 
-    buildPathsToPlayer(){
-        let type = "walking";
+    buildPathsToPlayer(type){
         let pq = new PriorityQueue((u, v) => {return (u.dijkstraCost==v.dijkstraCost)?0:(u.dijkstraCost>v.dijkstraCost?1:-1)});
         let u;
 
@@ -67,7 +66,7 @@ class GameMap{
             else {
                 this.array[i].dijkstraCost = Infinity;
             }
-            this.array[i].pathToPlayer = null;
+            this.array[i].pathToPlayer[type] = null;
             if (this.checkMovementLegal(type, this.array[i].posx, this.array[i].posy)) {
                 pq.push(this.array[i]);
             }
@@ -81,7 +80,7 @@ class GameMap{
                 let cost = v.distanceManhattan(u) >= 2 ? 1.00001 : 1;
                 if (v != null && (v.posx != u.posx || v.posy != u.posy) && (this.checkMovementLegal(type, v.posx, v.posy)) && (v.dijkstraCost > u.dijkstraCost + cost)) {
                     v.dijkstraCost = u.dijkstraCost + cost;
-                    v.pathToPlayer = u;
+                    v.pathToPlayer[type] = u;
                     pq.decreaseKey(v);
                 }
             }

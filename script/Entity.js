@@ -1,6 +1,7 @@
 class Entity{
     type = "entity";
     id;
+    faction = "neutral";
     posx;
     posy;
     movementType;
@@ -20,9 +21,10 @@ class Entity{
     width = 32;
     height = 32;
 
-    constructor(type, id, posx, posy, texture_index, movementType, maxHP, maxMorale, meleeDamage){
+    constructor(type, id, faction, posx, posy, texture_index, movementType, maxHP, maxMorale, meleeDamage){
         this.type = type;
         this.id = id;
+        this.faction = faction;
         this.posx = posx;
         this.posy = posy;
         this.texture_index = texture_index;
@@ -88,7 +90,7 @@ class Entity{
     }
 
     moveTowardsPlayer(){
-        let pathToPlayer = Game.instance.map.getTile(this.posx, this.posy).pathToPlayer;
+        let pathToPlayer = Game.instance.map.getTile(this.posx, this.posy).pathToPlayer[this.movementType];
         if (pathToPlayer != null) {
             this.moveToTile(pathToPlayer);
         }

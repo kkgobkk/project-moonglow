@@ -70,15 +70,17 @@ class Interface{
 
     
     static highlightPathToSelectedCell(){
+        let movementType = Game.instance.player.movementType;
         if (Interface.selectedCell != null) {
             let curr = Interface.selectedCell;
+            let next = curr;
             Interface.highlightCell(curr.posx, curr.posy, 0.30);
 
-            while (curr.pathToPlayer) {
-                if (curr.pathToPlayer.currentEntity == Game.instance.player) {
+            while (next = curr.pathToPlayer[movementType]) {
+                if (next.currentEntity == Game.instance.player) {
                     Interface.stepToSelectedCell = curr;
                 }
-                curr = curr.pathToPlayer;
+                curr = next;
                 Interface.highlightCell(curr.posx, curr.posy, 0.15);
             }
         }

@@ -20,5 +20,5 @@ class TestMap{
        static width = 20;
        static height = 15;
 
-       static enemy_spawns = [[0 , 0], [9, 6], [17, 5], [4, 12], [19, 13]]
+       static enemy_spawns = [[0 , 0, "enemy_goblin"], [9, 6, "enemy_goblin"], [17, 5, "enemy_goblin"], [4, 12, "enemy_goblin"], [19, 13, "enemy_wisp"]];
 }

@@ -1,6 +1,6 @@
 class Player extends Entity{
     constructor(posx, posy){
-        super("player", 0, posx, posy, 0, "walking", 100, 0, 20);
+        super("player", "ally", 0, posx, posy, 0, "walking", 100, 0, 20);
     }
 
     currentTile(){
@@ -12,7 +12,7 @@ class Player extends Entity{
         let oldx = this.x, oldy = this.y;
         if (Game.instance.map.inBounds(this.posx + x, this.posy + y)) {
             let targetEntity = Game.instance.map.getTile(this.posx+x, this.posy+y).currentEntity;
-            if (targetEntity != null && targetEntity.type == "enemy") {
+            if (targetEntity != null && targetEntity.faction == "enemy") {
                 this.meleeAttack(targetEntity);
                 turnover = true;
             }
@@ -22,7 +22,8 @@ class Player extends Entity{
         }
 
         if (this.posx != oldx || this.posy != oldy) {
-            Game.instance.map.buildPathsToPlayer();
+            Game.instance.map.buildPathsToPlayer("walking");
+            Game.instance.map.buildPathsToPlayer("flying");
         }
 
         if (turnover) {

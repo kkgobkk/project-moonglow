@@ -19,7 +19,9 @@ class Tile{
     posy;
 
     currentEntity = null;
-    pathToPlayer = null;
+    pathToPlayer = {
+        walking : null,
+    };
     dijkstraCost = Infinity;
 
     constructor(type, posx, posy){
